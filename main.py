@@ -25,10 +25,9 @@ for index, letter in enumerate(guess):
     elif letter in target_word:
         num_remaining_target_letters = target_letter_counts[letter] - correct_letters_counts[letter]
         more_remain = num_remaining_target_letters > 0
-        if letter in correct_letters:
-            if more_remain:
-                print(Fore.YELLOW, end='')
-        else:
+        if letter in correct_letters and more_remain:
+            print(Fore.YELLOW, end='')
+        elif letter not in correct_letters:
             print(Fore.YELLOW, end='')
 
         guess_letter_counts[letter] -= 1
