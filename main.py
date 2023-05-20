@@ -1,36 +1,19 @@
-from colorama import Fore
-from collections import Counter
+from flask import Flask, render_template
+import business_logic
+from word_list import WordList
 
-target_word = 'ceder'
-guess = 'crier'
-correct_letters = ''
+app = Flask('Latin Wordle')
+words = WordList()
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-guess_letter_counts = Counter(guess)
-print('guess letter counts: ' + str(guess_letter_counts))
-target_letter_counts = Counter(target_word)
-print('target letter counts: ' + str(target_letter_counts))
+@app.route('/colorize_guess/<string:target_word>/<string:guess>')
+def colorize_guess(target_word, guess):
+    return business_logic.colorize_guess(target_word, guess)
 
-for index, letter in enumerate(guess):
-    if letter == target_word[index]:
-        correct_letters += letter
+@app.route('/validate_word/<string:word>')
+def validate_word(word: str) -> str:
+    return str(word in words)
 
-correct_letters_counts = Counter(correct_letters)
-print('corrects letter counts: ' + str(correct_letters_counts))
-print('')
-
-for index, letter in enumerate(guess):
-    if letter == target_word[index]:
-        print(Fore.GREEN, end='')
-        correct_letters_counts[letter] -= 1
-    elif letter in target_word:
-        num_remaining_target_letters = target_letter_counts[letter] - correct_letters_counts[letter]
-        more_remain = num_remaining_target_letters > 0
-        if letter in correct_letters and more_remain:
-            print(Fore.YELLOW, end='')
-        elif letter not in correct_letters:
-            print(Fore.YELLOW, end='')
-
-        guess_letter_counts[letter] -= 1
-
-    print(letter + Fore.RESET, end=' ')
-    print(letter, index, target_word[index], guess_letter_counts[letter], correct_letters_counts)
+app.run('0.0.0.0', debug=True)

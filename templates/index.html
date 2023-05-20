@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Latin Wordle</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: xxx-large;
+        }
+        table {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: unset;
+            margin-bottom: 60px;
+        }
+        td {
+            margin: auto;
+            text-align: center;
+            border: 2px solid;
+            width: 78px;
+            height: 78px;
+            font-size: xxx-large;
+            background-color: lightgrey;
+            text-transform: uppercase;
+        }
+
+        #keyboard-cont {
+            margin: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+
+
+        #keyboard-cont div {
+            display: flex;
+        }
+
+
+        .second-row {
+            margin: 0.5rem 0;
+        }
+
+
+        button {
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 1rem;
+            margin: 0 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+
+
+
+        .keyboard-button-del {
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 1rem;
+            margin: 0 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+
+
+
+        .keyboard-button-enter {
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 1rem;
+            margin: 0 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+
+        .popup {
+            margin: -100px auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            align-items: center;
+            background-color: transparent;
+            border-radius: 25px;
+            text-align: center;
+            font-size: xx-large;
+            color: transparent;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+
+
+
+<h1>Latin Wordle</h1>
+
+
+<div id="popup" class="popup">
+    <h3 id="message">You win!</h3>
+    <h3 id="tries"></h3>
+    <h3 id="target_word"></h3>
+    <h5 id="definition"></h5>
+</div>
+
+
+<table>
+    <tr>
+        <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+</table>
+<!--<input type="text" onkeydown="alert(5 + 6)">-->
+
+
+
+
+<div id="keyboard-cont">
+    <div class="first-row" id="first-row">
+        <button id="q">q</button>
+        <button id="w">w</button>
+        <button id="e">e</button>
+        <button id="r">r</button>
+        <button id="t">t</button>
+        <button id="y">y</button>
+        <button id="u">u</button>
+        <button id="i">i</button>
+        <button id="o">o</button>
+        <button id="p">p</button>
+    </div>
+    <div class="second-row">
+        <button id="a">a</button>
+        <button id="s">s</button>
+        <button id="d">d</button>
+        <button id="f">f</button>
+        <button id="g">g</button>
+        <button id="h">h</button>
+        <button id="j">j</button>
+        <button id="k">k</button>
+        <button id="l">l</button>
+    </div>
+    <div class="third-row">
+        <button>Enter</button>
+        <button id="z">z</button>
+        <button id="x">x</button>
+        <button id="c">c</button>
+        <button id="v">v</button>
+        <button id="b">b</button>
+        <button id="n">n</button>
+        <button id="m">m</button>
+        <button>Del</button>
+    </div>
+
+
+    <div id="targetInputArea"><form id="targetInputForm"><input type="text" id="wordInput"><button type="submit">Submit</button></form></div>
+
+
+    <p>Beck Iverson - Latin Wordle Beta 1.1.5</p>
+</div>
+
+
+<script>
+    function cellAt(row, column) {
+        return cells[row * 5 + column]
+    }
+    let popup = document.getElementById("popup")
+    let message = document.getElementById("message")
+    let triesdisplay = document.getElementById("tries")
+    let target_word_display = document.getElementById("target_word")
+    let definition = document.getElementById("definition")
+    let target_word = 'irate'
+    let guess = ""
+    let row = 0
+    let column = 0
+    let tries = 0
+    let haswon = false;
+    let haslost = false;
+    const cells = document.querySelectorAll('td')
+
+    document.getElementById("targetInputForm").addEventListener("submit", event => {
+        event.preventDefault();
+
+        target_word = document.getElementById("wordInput").value;
+        console.log(target_word);
+        guess=""
+
+        return false;
+    })
+
+    function colorizeCells(colorCodes) {
+
+        const styleMapping = {
+            'n': 'gray',
+            'y': 'yellow',
+            'g': 'green'
+        }
+        for (let colI = 0; colI <= 4; ++colI) {
+            cellAt(row, colI).style.backgroundColor = styleMapping[colorCodes.charAt(colI)]
+            console.log(colorCodes.charAt(colI))
+            if(colorCodes.charAt(colI) === "n") {
+                document.getElementById(cellAt(row, colI).textContent).style.backgroundColor = "gray";
+            }
+        }
+    }
+
+    function won() {
+        if (haswon) {
+            console.log("function called")
+            console.log("Hooray!")
+            colorizeCells("ggggg")
+            popup.style.backgroundColor = "green"
+            popup.style.color = "white"
+            message.innerHTML = "You win!"
+            triesdisplay.textContent = "Tries: " + (tries + 1)
+        }
+    }
+
+    function lost() {
+        popup.style.backgroundColor = "red"
+        popup.style.color = "white"
+        message.innerHTML = "You lose!"
+        target_word_display.innerHTML = "The word was " + target_word
+    }
+
+    function deleteLetter() {
+        guess = guess.slice(0, -1);
+        if (column !== 0) {
+            column -= 1;
+        }
+        cellAt(row, column).textContent = "";
+    }
+
+    function addLetter(buttonLetter) {
+        console.log("guess before: " + guess)
+        if (guess.length < 5) {
+            cellAt(row, column).textContent = buttonLetter;
+            guess += buttonLetter;
+            ++column;
+        }
+        console.log("guess after: " + guess)
+    }
+
+    function enterGuess() {
+        console.log(guess)
+        if (guess === target_word) {
+            haswon = true;
+            won()
+        }
+        if (guess.length === 5) {
+            fetch(`/validate_word/${guess}`)
+                .then(response => response.text())
+                .then(valid => {
+                    if (valid === "True") {
+                        fetch(`/colorize_guess/${target_word}/${guess}`)
+                            .then(response => response.text())
+                            .then(colorCodes => {
+                                console.log(colorCodes)
+                                colorizeCells(colorCodes)
+                                ++row;
+                                ++tries;
+                                if (tries === 6) {
+                                    haslost = true;
+                                    lost()
+                                }
+                            })
+                        column = 0;
+                        guess = ''
+                    } else {
+                        alert("Invalid Word")
+                    }
+                })
+        }
+    }
+
+    function processInput(buttonPressed) {
+        console.log(buttonPressed)
+        if (buttonPressed === "Delete" || buttonPressed === "Del" || buttonPressed === "Backspace") {
+            deleteLetter();
+        } else if (buttonPressed === "Enter") {
+            enterGuess();
+        } else if (buttonPressed >= "a" && buttonPressed <= "z") {
+            console.log("calling addLetter")
+            addLetter(buttonPressed);
+        }
+    }
+
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener("click", () => {
+            if (button.textContent !== "Submit") {
+                console.log('Button clicked:', button.textContent);
+                processInput(button.textContent);
+            }
+        });
+    });
+
+    document.addEventListener("keydown", ev => {
+        processInput(ev.key)
+    })
+
+
+    if (haswon === true) {
+        won()
+    }
+    if (haslost === true) {
+        lost()
+    }
+
+
+
+
+</script>
+
+
+
+
+</body>
+</html>
+
