@@ -1,6 +1,6 @@
 class WordList:
     def __init__(self):
-        with open('words.txt', 'r') as file:
+        with open('static/words.txt', 'r') as file:
             lines = file.readlines()
 
         trimmed_lines = [line.strip() for line in lines]
