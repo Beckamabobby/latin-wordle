@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-import app.business_logic
+from app import business_logic
 from app.word_list import WordList
 
 app = Flask('Latin Wordle')
@@ -10,7 +10,7 @@ def index():
 
 @app.route('/colorize_guess/<string:target_word>/<string:guess>')
 def colorize_guess(target_word, guess):
-    return app.business_logic.colorize_guess(target_word, guess)
+    return business_logic.colorize_guess(target_word, guess)
 
 @app.route('/validate_word/<string:word>')
 def validate_word(word: str) -> str:
