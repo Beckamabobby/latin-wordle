@@ -12,7 +12,6 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
-
         h1 {
             text-align: center;
             font-size: xxx-large;
@@ -34,24 +33,18 @@
             background-color: lightgrey;
             text-transform: uppercase;
         }
-
         #keyboard-cont {
             margin: 1rem 0;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
         #keyboard-cont div {
             display: flex;
         }
-
-
         .second-row {
             margin: 0.5rem 0;
         }
-
-
         button {
             font-size: 1rem;
             font-weight: 700;
@@ -60,26 +53,6 @@
             cursor: pointer;
             text-transform: uppercase;
         }
-
-        .keyboard-button-del {
-            font-size: 1rem;
-            font-weight: 700;
-            padding: 1rem;
-            margin: 0 2px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        .keyboard-button-enter {
-            font-size: 1rem;
-            font-weight: 700;
-            padding: 1rem;
-            margin: 0 2px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-
         .popup {
             margin: -100px auto;
             position: absolute;
@@ -96,17 +69,11 @@
             padding-top: 50px;
             padding-bottom: 50px;
         }
-
-
     </style>
 </head>
 <body>
 
-
-
-
 <h1>Latin Wordle</h1>
-
 
 <div id="popup" class="popup">
     <h3 id="message">You win!</h3>
@@ -114,7 +81,6 @@
     <h3 id="target_word"></h3>
     <h5 id="definition"></h5>
 </div>
-
 
 <table>
     <tr>
@@ -136,10 +102,6 @@
         <td></td><td></td><td></td><td></td><td></td>
     </tr>
 </table>
-<!--<input type="text" onkeydown="alert(5 + 6)">-->
-
-
-
 
 <div id="keyboard-cont">
     <div class="first-row" id="first-row">
@@ -177,13 +139,9 @@
         <button>Del</button>
     </div>
 
-
-    <div id="targetInputArea"><form id="targetInputForm"><input type="text" id="wordInput"><button type="submit">Submit</button></form></div>
-
-
+    <div id="targetInputArea"><form id="targetInputForm"><label for="wordInput">Target word input area</label><input type="text" id="wordInput"><button type="submit">Submit</button></form></div>
     <p>Beck Iverson - Latin Wordle Beta 1.1.5</p>
 </div>
-
 
 <script>
     function cellAt(row, column) {
@@ -191,30 +149,30 @@
     }
     let popup = document.getElementById("popup")
     let message = document.getElementById("message")
-    let triesdisplay = document.getElementById("tries")
-    let target_word_display = document.getElementById("target_word")
+    let triesDisplay = document.getElementById("tries")
+    let targetWordDisplay = document.getElementById("target_word")
     let definition = document.getElementById("definition")
-    let target_word = 'irate'
+    let targetWord = ""
     let guess = ""
     let row = 0
     let column = 0
     let tries = 0
-    let haswon = false;
-    let haslost = false;
+    let hasWon = false;
+    let hasLost = false;
     const cells = document.querySelectorAll('td')
 
     document.getElementById("targetInputForm").addEventListener("submit", event => {
         event.preventDefault();
 
-        target_word = document.getElementById("wordInput").value;
-        console.log(target_word);
-        guess=""
+        targetWord = document.getElementById("wordInput").value;
+        console.log(targetWord);
+        guess="";
+        document.getElementById("targetInputArea").innerHTML = "";
 
         return false;
     })
 
     function colorizeCells(colorCodes) {
-
         const styleMapping = {
             'n': 'gray',
             'y': 'yellow',
@@ -230,14 +188,14 @@
     }
 
     function won() {
-        if (haswon) {
+        if (hasWon) {
             console.log("function called")
             console.log("Hooray!")
             colorizeCells("ggggg")
             popup.style.backgroundColor = "green"
             popup.style.color = "white"
             message.innerHTML = "You win!"
-            triesdisplay.textContent = "Tries: " + (tries + 1)
+            triesDisplay.textContent = "Tries: " + (tries + 1)
         }
     }
 
@@ -245,7 +203,7 @@
         popup.style.backgroundColor = "red"
         popup.style.color = "white"
         message.innerHTML = "You lose!"
-        target_word_display.innerHTML = "The word was " + target_word
+        targetWordDisplay.innerHTML = "The word was " + targetWord
     }
 
     function deleteLetter() {
@@ -268,8 +226,8 @@
 
     function enterGuess() {
         console.log(guess)
-        if (guess === target_word) {
-            haswon = true;
+        if (guess === targetWord) {
+            hasWon = true;
             won()
         }
         if (guess.length === 5) {
@@ -277,7 +235,7 @@
                 .then(response => response.text())
                 .then(valid => {
                     if (valid === "True") {
-                        fetch(`/colorize_guess/${target_word}/${guess}`)
+                        fetch(`/colorize_guess/${targetWord}/${guess}`)
                             .then(response => response.text())
                             .then(colorCodes => {
                                 console.log(colorCodes)
@@ -285,7 +243,7 @@
                                 ++row;
                                 ++tries;
                                 if (tries === 6) {
-                                    haslost = true;
+                                    hasLost = true;
                                     lost()
                                 }
                             })
@@ -299,14 +257,16 @@
     }
 
     function processInput(buttonPressed) {
-        console.log(buttonPressed)
-        if (buttonPressed === "Delete" || buttonPressed === "Del" || buttonPressed === "Backspace") {
-            deleteLetter();
-        } else if (buttonPressed === "Enter") {
-            enterGuess();
-        } else if (buttonPressed >= "a" && buttonPressed <= "z") {
-            console.log("calling addLetter")
-            addLetter(buttonPressed);
+        if (targetWord !== "") {
+            console.log(buttonPressed)
+            if (buttonPressed === "Delete" || buttonPressed === "Del" || buttonPressed === "Backspace") {
+                deleteLetter();
+            } else if (buttonPressed === "Enter") {
+                enterGuess();
+            } else if (buttonPressed >= "a" && buttonPressed <= "z") {
+                console.log("calling addLetter")
+                addLetter(buttonPressed);
+            }
         }
     }
 
@@ -323,22 +283,13 @@
         processInput(ev.key)
     })
 
-
-    if (haswon === true) {
+    if (hasWon) {
         won()
     }
-    if (haslost === true) {
+    if (hasLost) {
         lost()
     }
 
-
-
-
 </script>
-
-
-
-
 </body>
 </html>
-
