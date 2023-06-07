@@ -144,8 +144,8 @@
 </div>
 
 <script>
-    function cellAt(row, column) {
-        return cells[row * 5 + column]
+    function cellElementAt(row, column) {
+        return cellElements[row * 5 + column]
     }
     let popup = document.getElementById("popup")
     let message = document.getElementById("message")
@@ -159,7 +159,7 @@
     let tries = 0
     let hasWon = false;
     let hasLost = false;
-    const cells = document.querySelectorAll('td')
+    const cellElements = document.querySelectorAll('td')
 
     document.getElementById("targetInputForm").addEventListener("submit", event => {
         event.preventDefault();
@@ -179,10 +179,11 @@
             'g': 'green'
         }
         for (let colI = 0; colI <= 4; ++colI) {
-            cellAt(row, colI).style.backgroundColor = styleMapping[colorCodes.charAt(colI)]
+            const cellElement = cellElementAt(row, colI);
+            cellElement.style.backgroundColor = styleMapping[colorCodes.charAt(colI)]
             console.log(colorCodes.charAt(colI))
             if(colorCodes.charAt(colI) === "n") {
-                document.getElementById(cellAt(row, colI).textContent).style.backgroundColor = "gray";
+                document.getElementById(cellElement.textContent).style.backgroundColor = "gray";
             }
         }
     }
@@ -211,13 +212,13 @@
         if (column !== 0) {
             column -= 1;
         }
-        cellAt(row, column).textContent = "";
+        cellElementAt(row, column).textContent = "";
     }
 
     function addLetter(buttonLetter) {
         console.log("guess before: " + guess)
         if (guess.length < 5) {
-            cellAt(row, column).textContent = buttonLetter;
+            cellElementAt(row, column).textContent = buttonLetter;
             guess += buttonLetter;
             ++column;
         }
