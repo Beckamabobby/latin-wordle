@@ -33,12 +33,11 @@ def colorize_guess(target_word: str, guess: str) -> str:
                 letter_color = 'e'
 
         guess_letter_counts[letter] -= 1
+        target_letter_counts[letter] -= 1
 
         word_colors += letter_color
-        # print(letter + Fore.RESET, end=' ')
-        # print(letter, index, target_word[index], guess_letter_counts[letter], correct_letters_counts)
 
     return word_colors
 
 if __name__ == '__main__':
-    print(colorize_guess('cedar', 'seedy')) # nyyyg
+    print(colorize_guess('cedar', 'seedy')) # ngxy
