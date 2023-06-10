@@ -29,6 +29,8 @@ def colorize_guess(target_word: str, guess: str) -> str:
                 letter_color = 'y'
             elif letter not in correct_letters and target_letter_counts[letter] > 0:
                 letter_color = 'y'
+            else:
+                letter_color = 'e'
 
         guess_letter_counts[letter] -= 1
 

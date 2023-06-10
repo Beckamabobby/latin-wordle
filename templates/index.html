@@ -175,15 +175,20 @@
     function colorizeCells(colorCodes) {
         const styleMapping = {
             'n': 'gray',
+            'e': 'gray', // e stands for keyboard exception, meaning that while the cell is made gray the button on the keyboard isn't, as the letter is elsewhere in the word
             'y': 'yellow',
             'g': 'green'
         }
+
         for (let colI = 0; colI <= 4; ++colI) {
             const cellElement = cellElementAt(row, colI);
-            cellElement.style.backgroundColor = styleMapping[colorCodes.charAt(colI)]
-            console.log(colorCodes.charAt(colI))
-            if(colorCodes.charAt(colI) === "n") {
-                document.getElementById(cellElement.textContent).style.backgroundColor = "gray";
+            const colorCode = colorCodes.charAt(colI);
+            cellElement.style.backgroundColor = styleMapping[colorCode]
+            console.log(colorCode)
+
+            if (colorCode === "n") {
+                const keyboardButtonElement = document.getElementById(cellElement.textContent);
+                keyboardButtonElement.style.backgroundColor = "gray";
             }
         }
     }
