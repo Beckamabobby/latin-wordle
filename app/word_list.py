@@ -1,3 +1,6 @@
+from random import choice
+
+
 class WordList:
     def __init__(self):
         with open('static/words.txt', 'r') as file:
@@ -8,6 +11,9 @@ class WordList:
 
     def __contains__(self, item):
         return item in self.words
+
+    def choose_random(self):
+        return choice(list(self.words))
 
 if __name__ == '__main__':
     words = WordList()

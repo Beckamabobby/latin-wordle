@@ -3,7 +3,7 @@ from app import colorizer
 from app.word_list import WordList
 
 app = Flask('Latin Wordle')
-words = WordList()
+wordList = WordList()
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -14,4 +14,8 @@ def colorize_guess(target_word, guess):
 
 @app.route('/validate_word/<string:word>')
 def validate_word(word: str) -> str:
-    return str(word in words)
+    return str(word in wordList)
+
+@app.route('/choose_random_word')
+def choose_random_word() -> str:
+    return wordList.choose_random()

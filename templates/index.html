@@ -139,7 +139,7 @@
         <button>Del</button>
     </div>
 
-    <div id="targetInputArea"><form id="targetInputForm"><label for="wordInput">Target word input area</label><input type="text" id="wordInput"><button type="submit">Submit</button></form></div>
+    <div id="targetInputArea"><form id="targetInputForm"><label for="wordInput">Target word input area</label><input type="text" id="wordInput"><button type="submit">Submit</button></form><button id="randomButton" onclick="pickRandom()">Random Word</button></div>
     <p>Beck Iverson - Latin Wordle Beta 1.2.4</p>
 </div>
 
@@ -147,11 +147,12 @@
     function cellElementAt(row, column) {
         return cellElements[row * 5 + column]
     }
-    let popup = document.getElementById("popup")
-    let message = document.getElementById("message")
-    let triesDisplay = document.getElementById("tries")
-    let targetWordDisplay = document.getElementById("target_word")
-    let definition = document.getElementById("definition")
+    const popup = document.getElementById("popup")
+    const message = document.getElementById("message")
+    const triesDisplay = document.getElementById("tries")
+    const targetWordDisplay = document.getElementById("target_word")
+    const definition = document.getElementById("definition")
+    const cellElements = document.querySelectorAll('td')
     let targetWord = ""
     let guess = ""
     let row = 0
@@ -159,7 +160,6 @@
     let tries = 0
     let hasWon = false;
     let hasLost = false;
-    const cellElements = document.querySelectorAll('td')
 
     document.getElementById("targetInputForm").addEventListener("submit", event => {
         event.preventDefault();
@@ -167,10 +167,22 @@
         targetWord = document.getElementById("wordInput").value;
         console.log(targetWord);
         guess="";
-        document.getElementById("targetInputArea").innerHTML = "";
+        if (targetWord !== "") {
+            document.getElementById("targetInputArea").style = "display:none";
+        }
 
         return false;
     })
+    
+    function pickRandom(){
+        fetch(`/choose_random_word`)
+            .then(response => response.text())
+            .then(word => {
+                targetWord = word;
+                console.log(targetWord)
+                document.getElementById("targetInputArea").style = "display:none";
+            })
+    }
 
     function colorizeCells(colorCodes) {
         const styleMapping = {
