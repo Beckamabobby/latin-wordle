@@ -9,9 +9,9 @@ def colorize_guess(target_word: str, guess: str) -> str:
     target_letter_counts = Counter(target_word)
     # print('target letter counts: ' + str(target_letter_counts))
 
-    for index, letter in enumerate(guess):
-        if letter == target_word[index]:
-            correct_letters += letter
+    for target_letter, guess_letter in zip(target_word, guess):
+        if guess_letter == target_letter:
+            correct_letters += guess_letter
 
     correct_letters_counts = Counter(correct_letters)
     print('corrects letter counts: ' + str(correct_letters_counts))
