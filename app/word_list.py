@@ -1,5 +1,6 @@
 from random import choice
 
+print('word_list.py console test')
 
 class WordList:
     def __init__(self):

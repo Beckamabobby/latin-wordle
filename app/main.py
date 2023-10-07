@@ -2,6 +2,12 @@ from flask import Flask, render_template
 from app import colorizer
 from app.word_list import WordList
 
+# DON'T RUN THIS FILE TO RUN THE PROGRAM!!! RUN wsgi.py!!!
+# DON'T RUN THIS FILE TO RUN THE PROGRAM!!! RUN wsgi.py!!!
+# DON'T RUN THIS FILE TO RUN THE PROGRAM!!! RUN wsgi.py!!!
+
+print('main.py console test')
+
 app = Flask('Latin Wordle')
 wordList = WordList()
 @app.route('/')
