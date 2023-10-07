@@ -166,7 +166,7 @@
 
     <button id="surrender" class="surrender">I give up</button>
 
-    <p>Beck Iverson - Latin Wordle Beta 2.1.4</p>
+    <p>Beck Iverson - Latin Wordle Beta 2.2.7</p>
 </div>
 
 <script>
@@ -344,7 +344,11 @@
 
     // manages user control buttons
     document.getElementById("surrender").addEventListener("click", function() {
-        lost()
+        if (targetWord !== '') {
+            lost()
+        } else {
+            alert("You can't give up right now! You haven't even started! :)")
+        }
     })
 
     document.getElementById("settings").addEventListener("click", function() {
