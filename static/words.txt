@@ -26790,7 +26790,6 @@ symia
 symie
 symis
 symon
-synai
 synar
 synod
 syrac
