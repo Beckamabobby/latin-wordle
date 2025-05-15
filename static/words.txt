@@ -4290,7 +4290,6 @@ beera
 realm
 fudit
 ruber
-sinai
 facti
 necat
 casas
@@ -19406,7 +19405,6 @@ grana
 grand
 grani
 grano
-graqy
 grari
 grata
 grate
@@ -26222,7 +26220,6 @@ simul
 simum
 simus
 simvl
-sinai
 sinam
 sinan
 sinas
@@ -26792,7 +26789,6 @@ symia
 symie
 symis
 symon
-synai
 synar
 synod
 syrac
