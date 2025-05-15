@@ -205,6 +205,8 @@
         fetch(`/choose_random_word`)
             .then(response => response.text())
             .then(word => {
+                //future bug fix notes: should probably add check here to see if the random word
+                //is a valid latin word
                 targetWord = word;
                 console.log(targetWord)
                 document.getElementById("targetInputArea").style = "display:none";
